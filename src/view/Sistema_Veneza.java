@@ -1,6 +1,8 @@
 package view;
 
+import dao.UsuarioDao;
 import java.awt.Color;
+import model.UsuarioModel;
 
 /**
  *
@@ -13,10 +15,11 @@ public class Sistema_Veneza extends javax.swing.JFrame {
      */
     public Sistema_Veneza() {
         initComponents();
+        this.lblStatus.setVisible(false);
         this.jLabel2.setVisible(false);
     }
 
-     @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -25,6 +28,7 @@ public class Sistema_Veneza extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,10 +44,22 @@ public class Sistema_Veneza extends javax.swing.JFrame {
                 txtNomeFocusLost(evt);
             }
         });
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Nome:");
+
+        lblStatus.setText("lblStatus");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -59,7 +75,8 @@ public class Sistema_Veneza extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSalvar)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
+                            .addComponent(jLabel2)
+                            .addComponent(lblStatus))))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -73,7 +90,9 @@ public class Sistema_Veneza extends javax.swing.JFrame {
                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
                 .addComponent(btnSalvar)
-                .addGap(28, 28, 28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblStatus)
+                .addGap(7, 7, 7))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -105,6 +124,32 @@ public class Sistema_Veneza extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_txtNomeFocusLost
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        UsuarioDao usuario = new UsuarioDao();
+        UsuarioModel model = new UsuarioModel();
+
+        if (!model.setNome(txtNome.getText())) {
+            lblStatus.setVisible(true);
+            lblStatus.setForeground(Color.red);
+            lblStatus.setText("Erro ao salvar.");
+            txtNome.requestFocus();
+
+        } else {
+
+            lblStatus.setVisible(true);
+            lblStatus.setForeground(Color.green);
+            lblStatus.setText("cadastro realizado.");
+            usuario.salvar(model);
+        }
+
+        txtNome.setText("Nome");
+        txtNome.setForeground(Color.lightGray);
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        lblStatus.setVisible(false);
+    }//GEN-LAST:event_txtNomeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -144,6 +189,7 @@ public class Sistema_Veneza extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

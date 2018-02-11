@@ -34,10 +34,11 @@ public class UsuarioDao {
         return usuarioModel;
     }
     
-    public void excluir(UsuarioModel usuariomodel){
+    public void excluir(UsuarioModel usuarioModel){
         EntityManager em = getEM();
         
         em.getTransaction().begin();
         em.remove(em);
+        
     }
 }

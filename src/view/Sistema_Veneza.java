@@ -29,6 +29,7 @@ public class Sistema_Veneza extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -36,6 +37,7 @@ public class Sistema_Veneza extends javax.swing.JFrame {
 
         txtNome.setForeground(new java.awt.Color(204, 204, 204));
         txtNome.setText("Nome");
+        txtNome.setEnabled(false);
         txtNome.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtNomeFocusGained(evt);
@@ -50,7 +52,7 @@ public class Sistema_Veneza extends javax.swing.JFrame {
             }
         });
 
-        btnSalvar.setText("Salvar");
+        btnSalvar.setText("Novo");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -60,6 +62,13 @@ public class Sistema_Veneza extends javax.swing.JFrame {
         jLabel2.setText("Nome:");
 
         lblStatus.setText("lblStatus");
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -73,7 +82,10 @@ public class Sistema_Veneza extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSalvar)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnSalvar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar))
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(lblStatus))))
@@ -89,7 +101,9 @@ public class Sistema_Veneza extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
-                .addComponent(btnSalvar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblStatus)
                 .addGap(7, 7, 7))
@@ -122,34 +136,52 @@ public class Sistema_Veneza extends javax.swing.JFrame {
             this.txtNome.setText("Nome");
             this.txtNome.setForeground(Color.lightGray);
         }
-
     }//GEN-LAST:event_txtNomeFocusLost
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        UsuarioDao usuario = new UsuarioDao();
-        UsuarioModel model = new UsuarioModel();
-
-        if (!model.setNome(txtNome.getText())) {
-            lblStatus.setVisible(true);
-            lblStatus.setForeground(Color.red);
-            lblStatus.setText("Erro ao salvar.");
+        if (btnSalvar.getText().equals("Novo")) {
+            txtNome.setEnabled(true);
             txtNome.requestFocus();
+            btnSalvar.setText("Salvar");
+        } else if (!txtNome.getText().isEmpty()) {
 
-        } else {
+            UsuarioDao usuario = new UsuarioDao();
+            UsuarioModel model = new UsuarioModel();
 
-            lblStatus.setVisible(true);
-            lblStatus.setForeground(Color.green);
-            lblStatus.setText("cadastro realizado.");
-            usuario.salvar(model);
+            if (!model.setNome(txtNome.getText())) {
+                lblStatus.setVisible(true);
+                lblStatus.setForeground(Color.red);
+                lblStatus.setText("Erro ao salvar.");
+                txtNome.requestFocus();
+
+            } else {
+
+                lblStatus.setVisible(true);
+                lblStatus.setForeground(Color.blue);
+                lblStatus.setText("cadastro realizado.");
+                usuario.salvar(model);
+                btnSalvar.setText("Novo");
+                txtNome.setEnabled(false);
+                txtNome.setText("Nome");
+            }
+
+            txtNome.setText("Nome");
+            txtNome.setForeground(Color.lightGray);
         }
-
-        txtNome.setText("Nome");
-        txtNome.setForeground(Color.lightGray);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         lblStatus.setVisible(false);
     }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        if (btnSalvar.getText().equals("Salvar")) {
+            btnSalvar.setText("Novo");
+            txtNome.setEnabled(false);
+            txtNome.setText("Nome");
+            lblStatus.setVisible(false);
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,8 +215,8 @@ public class Sistema_Veneza extends javax.swing.JFrame {
             new Sistema_Veneza().setVisible(true);
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
